@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="keywords" content="摩力宝贝计划,摩力云科技"/>
+    <meta name="author" content="heying, 848032671@qq.com"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name = "format-detection" content = "telephone=no">
+    <title>进度详情-摩力宝贝计划</title>
+    <script src="js/jquery-3.2.1.js"></script>
+    <script src="js/vue.js"></script>
+    <script src="js/toast.js"></script>
+    <script src="js/mlbb.js"></script> 
+    <script src="js/url.js"></script> 
+    <link rel="stylesheet" href="css/animate.css">
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/toast.css">
+    <link rel="stylesheet" href="css/mlbb.css">
+</head>
+<body class="body">
+    <div class="mlbb_plan" id="mlbb_plan">
+    <div class="all_process">
+        <div class="left_process"><div class="virtical_process"></div></div>
+        <div class="right_process">
+            <div class="process_item" v-for="item in progressG">
+                <div class="icon"></div>
+                <div class="title">{{item.logContent}}</div>
+                <div class="imgs"></div>
+                <div class="time">{{item.logTime}}</div>
+                <div class="name">操作人：{{item.logUser}}</div>
+            </div>
+            <!-- <div class="process_item">
+                <div class="icon"></div>
+                <div class="title">ewerewfwef</div>
+                <div class="imgs"></div>
+                <div class="time">2017-09-16 05:56</div>
+                <div class="name">操作人：闪电</div>
+            </div> 
+            <div class="process_item">
+                <div class="icon"></div>
+                <div class="title">ewerewfwef</div>
+                <div class="imgs"></div>
+                <div class="time">2017-09-16 05:56</div>
+                <div class="name">操作人：闪电</div>
+            </div> -->
+        </div>
+       
+    </div>
+    <div class="left_process"></div>
+    <div class="right_process">
+            <div style="height:250px;margin-top:-10px">
+                <div class="icon" id="initicon"><span>&#xe607;</span></div>
+                <div class="title">{{progressM[0].logContent}}</div>
+                <div class="imgs">
+                    <!-- <img :src="img" alt="" v-for='img in progressM[0].imgs'> -->
+                    <!-- <img src="images/2.jpg" alt="">
+                    <img src="images/3.jpg" alt="">
+                    <img src="images/4.jpg" alt="">
+                    <img src="images/4.jpg" alt="">
+                    <img src="images/5.jpg" alt=""> -->
+                </div>
+                <div class="time">{{progressM[0].logTime}}</div>
+                <div class="name">操作人：{{progressM[0].logUser}}</div>
+            </div>
+    </div>
+    </div>
+</body>
+<script>
+    var progress=new Vue({
+    el:'#mlbb_plan',
+    data:{
+        progressG:[],
+        progressM:[]
+    }
+});
+    var orderid=getUrlParam('orderid');
+    getProgress(orderid)
+  
+function DomAction(){
+    $('.virtical_process').css('height',$('.right_process').height()+'px');
+    var len=$('.process_item').length;
+    if(len>0){
+        $('.process_item').eq(0).css('color','rgb(239, 144, 57)');
+    }
+    switch (len) {
+        case 0:
+        if($('.icon').length>0){
+            $('.icon').html('<img src="images/normal.png">');
+        }
+        break;
+        case 1:
+        $('#initicon').html('<span>&#xe607;</span>');
+        $('.process_item .icon').eq(0).html('<img src="images/normal.png">')
+        break;
+        case 2:
+        $('#initicon').html('<span>&#xe607;</span>');
+        $('.process_item .icon').eq(0).html('<img src="images/normal.png">')
+        $('.process_item .icon').eq(1).html('<span>&#xe607;</span>')
+        break;
+        case 3:
+        $('#initicon').html('<span>&#xe607;</span>');
+        $('.process_item .icon').eq(0).html('<img src="images/normal.png">')
+        $('.process_item .icon').eq(1).html('<span>&#xe607;</span>')
+        $('.process_item .icon').eq(2).html('<span>&#xe607;</span>')
+        break;
+        case 4:
+        $('#initicon').html('<span>&#xe607;</span>');
+        $('.process_item .icon').eq(0).html('<img src="images/normal.png">')
+        $('.process_item .icon').eq(1).html('<span>&#xe607;</span>')
+        $('.process_item .icon').eq(2).html('<span>&#xe607;</span>')
+        $('.process_item .icon').eq(3).html('<span>&#xe607;</span>')
+        break;
+        default:
+        break;
+    }
+}
+function getProgress(orderId){
+    $.ajax({
+        type: 'POST',
+        url:url_head+'/app/user/selectOrderStatus',
+        data:{
+            orderId:orderId
+        },
+        dataType:"json",
+        cache: false,
+        success: function(data){
+            if(data.code==200){
+                var data=data.data;//进度数组
+                data=data.reverse(); //倒序
+            for(var i=0;i<data.length;i++){
+            data[i].logTime=new Date(data[i].logTime).format('yyyy-MM-dd hh:mm');
+            }
+            if(data.length>1){
+                progress.progressG=data.slice(0,data.length-1);
+                progress.progressM=data.slice(data.length-1,data.length);
+                console.log(progress.progressM)
+                // return;
+            }
+            if(data.length==1){
+                progress.progressM=data;
+                // return;
+            }
+            if(data.length==0){
+                // 没有进度
+            } 
+            }else{
+                toastBG(data.msg);
+               
+            }  
+            Vue.nextTick(function(){DomAction()});
+        },
+        error: function(e) {
+            toastBG('发生错误，请刷新再试！')          
+        } 
+    });
+}
+
+</script>
+<script src="js/toast.js"></script>
+</html>

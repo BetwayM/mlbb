@@ -1,0 +1,45 @@
+/*
+ * @Author: huangbo 
+ * @Date: 2017-11-21 13:25:32 
+ * @Last Modified by: heying
+ * @Last Modified time: 2017-12-08 12:35:02
+ */
+ *{
+    margin: 0;
+    padding: 0;
+    outline: none;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    /* 防止超出页面 */
+    box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	/* Firefox */
+	-webkit-box-sizing: border-box;
+	/* Safari */
+}
+input::-webkit-input-placeholder,
+textarea::-webkit-input-placeholder{
+    color:#222;
+    text-shadow: none;
+    -webkit-text-fill-color: initial;
+}
+input{
+    -webkit-appearance: none;
+    }
+    textarea{
+    -webkit-appearance: none;
+    }
+    textarea,input[type="password"],input[type="text"],input[type="num"]{resize:none;outline:0;-webkit-appearance:none;white-space:pre-wrap;word-wrap:break-word;background:#fff}
+@font-face {
+    font-family: 'iconfont';  /* project id 481933 */
+    src: url('http://at.alicdn.com/t/font_481933_qq9jgchahxx8yqfr.eot');
+    src: url('http://at.alicdn.com/t/font_481933_qq9jgchahxx8yqfr.eot?#iefix') format('embedded-opentype'),
+    url('http://at.alicdn.com/t/font_481933_qq9jgchahxx8yqfr.woff') format('woff'),
+    url('http://at.alicdn.com/t/font_481933_qq9jgchahxx8yqfr.ttf') format('truetype'),
+    url('http://at.alicdn.com/t/font_481933_qq9jgchahxx8yqfr.svg#iconfont') format('svg');
+  }
+   
+body{
+    width: 100%;
+    height: 100%;
+    background: #f7f7f7;
+}

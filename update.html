@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="keywords" content="摩力宝贝计划,摩力云科技"/>
+    <meta name="author" content="heying, 848032671@qq.com"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name = "format-detection" content = "telephone=no">
+    <title>上传素材-摩力宝贝计划</title>
+    <link rel="stylesheet" href="css/animate.css">
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/toast.css">
+    <link rel="stylesheet" href="css/mlbb.css">
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/index.css">
+    <script src="js/jquery-3.2.1.js"></script>
+    <script src="js/vue.js"></script>
+    <script src="js/toast.js"></script>
+    <script src="js/mlbb.js"></script>  
+    <script src="js/url.js"></script>  
+    <style>
+        .img_cover{
+            position: fixed;
+            top: 0;left: 0;
+            z-index: 99999999999999999999999;
+            display: none;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+        }
+        .img_cover>img{
+            position: absolute;
+            top: 50%;
+            margin-left: 5px;
+            
+        }
+    </style>
+</head>
+<body class="body">
+<div id="app">
+    <script>
+    function img(file){
+//         var reader = new FileReader();
+//   reader.onload = function(evt){
+   
+//     console.log(evt.target.result)
+//   }
+//   reader.readAsDataURL(file.files[0]);
+    }
+        </script>
+    <!-- <div class="update_tip">请上传婚纱照及怀孕照:</div> -->
+    <section class=" img-section">
+            <p class="up-p"><span class="up-span">请上传婚纱照及怀孕照:</span></p>
+            <div class="z_photo upimg-div clear" >
+                <section class="z_file fl">
+                    <img src="images/a11.png" class="add-img">
+                    <input type="file" name="file"  id="file" class="file" value="" onchange="img(this)" accept="image/jpg,image/jpeg,image/png,image/bmp" multiple />
+                </section>
+             </div>
+         </section>
+       
+    <!-- <div class="update_main"><img src="" alt=""></div> -->
+    <div class="update_tip">*建议上传5-10张,素材较大，请耐心等待上传</div>
+    <button class="mlbb_update_btn" id="update" >我选好了</button>
+</div>
+<aside class="mask works-mask">
+    <div class="mask-content  animated fadeInUp">
+        <p class="del-p">您确定要删除该素材吗？</p>
+        <p class="check-p"><span class="del-com wsdel-ok">确定</span><span class="wsdel-no">取消</span></p>
+    </div>
+</aside>
+<!-- 确认上传 -->
+<div class="cover">
+    <div class="cover_content animated fadeInUp">
+        <div class="title"> 素材用于视频制作， 一旦上传将不可修改，确定上传？</div>
+        <div class="cover_btns">
+            <div class="left" id="cancel">取消</div>
+            <div class="right" id="confirm">确定</div>
+        </div>
+    </div>
+</div>
+<!-- 灯箱 -->
+<div class="img_cover animated zoomIn">
+    <img src="" id="preview">
+</div>
+</body>
+<script src="js/imgUp.js"></script>
+<script>
+    var imgs=[];
+    var orderid=getUrlParam('orderid');
+    console.log(orderid)
+    $("#update").on("click",function(){
+        if($('.up-img').length>0){
+            imgs=[];
+
+            for(var i=0;i<$('.up-img').length;i++){
+                var img='{"'+i+'":"'+$('.up-img').eq(i).attr('src')+'"}';
+                img=JSON.parse(img);
+                imgs.push(img)
+            }
+            $(".cover").show();
+            console.log(imgs)
+        }else{
+            toastBG('请先上传素材!')
+        }
+        
+    });
+    $("#cancel").on("click",function(){
+        $(".cover").hide();
+    });
+    $(".img_cover").on("click",function(){
+        $(".img_cover").hide();
+    });
+    $("#confirm").on("click",function(){
+        updateImgs(orderid,imgs);
+    });
+function updateImgs(orderId,imgs){
+    $.ajax({
+        type: 'POST',
+        url:url_head+'/app/updateOrderimages',
+        data:{
+            orderId:orderId,
+            images:imgs
+        },
+        dataType:"json",
+        cache: false,
+        success: function(data){
+        if(data.code==200){
+            location.href="order_detail.html?orderid="+orderId;//回到订单详情页面
+        }else{
+            toastBG("素材上传失败！");	
+        }
+
+        },
+        error: function(e) { 
+        //跳转到错误页面
+        toastBG("发生错误");} 
+    });
+}
+</script>
+</html>

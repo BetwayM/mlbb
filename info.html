@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="keywords" content="摩力宝贝计划,摩力云科技"/>
+    <meta name="author" content="heying, 848032671@qq.com"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name = "format-detection" content = "telephone=no">
+    <script src="js/jquery-3.2.1.js"></script>
+    <script src="js/vue.js"></script>
+    <script src="js/url.js"></script>
+    <script src="js/toast.js"></script>
+    <link rel="stylesheet" href="css/toast.css">
+    <link rel="stylesheet" href="css/mlbb.css">
+    <link rel="stylesheet" href="css/base.css">
+    <script src="js/mlbb.js"></script>
+    <title>填写信息-摩力宝贝计划</title>
+</head>
+<body class="body">
+    <div class="mlbb_plan" id="mlbb_plan">
+        <div class="mlbb_input_head">
+            <div class="mlbb_head" onclick="document.getElementById('input_head').click()"><img src="images/2.jpg" alt="" id="showImg"></div>
+            <!-- <div class="mlbb_head_tip">请添加头像</div> -->
+        </div>
+        <div class="mlbb_input">
+            <input type="text" class="mlbb_input_phone" placeholder="请输入您的名字" maxlength="8" onkeyup="this.value=this.value.replace(/[\d]/g,'').replace(' ','');">
+        </div>
+
+    <button class="mlbb_next_btn">下一步</button>
+    </div>
+     <!-- tupian -->
+     <input  id="input_head"  type="file" accept="image/*" style="display: none;"/>
+     <div id="clipArea" style='display:none'>
+         <div class="cancel_btns" id="cancel_clip">&#xe635;</div>
+         <div class="yes_btns" id="yes_clip">&#xe65e;</div>
+     </div>
+</body>
+<script src="js/photo/hammer.min.js"></script>
+<script src="js/photo/iscroll-zoom-min.js"></script>
+<script src="js/photo/lrz.all.bundle.js"></script>
+<script src="js/photo/PhotoClip.js"></script>
+<script>
+    // params
+    var photo='https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=1257285701,821563668&fm=27&gp=0.jpg';//默认头像
+    // parmas
+    function toastBG(text) {
+        $('body').toast({
+            position:'fixed',
+            content:text,
+            duration:3000,
+            isCenter:false,
+            background:'rgba(244,64,64,0.8)',
+            animateIn:'bounceIn-hastrans',
+            animateOut:'bounceOut-hastrans',
+        });
+     }
+var pc = new PhotoClip('#clipArea', {
+    size: 260,
+	outputSize: 640,
+    // adaptive: ['100%', '100%'],
+    file: '#input_head',
+    view: '#showImg',
+    ok: '#yes_clip',
+    //img: 'img/mm.jpg',
+    loadStart: function(data) {
+        console.log('开始读取照片'+JSON.stringify(data));
+    },
+    loadComplete: function(data) {
+        console.log('照片读取完成'+JSON.stringify(data));
+        document.getElementById('clipArea').style.display='block';
+    },
+    done: function(dataURL) {
+        document.getElementById('clipArea').style.display='none';
+        console.log(dataURL);
+        $('.es_inputli font').hide();
+        $('#showImg').attr('src',dataURL);
+        $('#showImg').show();
+        getPhotoUrl(dataURL);
+    },
+    fail: function(msg) {
+        toastBG(msg);
+    }
+});	
+$(function(){
+    $('#cancel_clip').on('click',function(){
+        document.getElementById('clipArea').style.display='none';
+    });
+    $('.mlbb_next_btn').on('click',function(){
+        if($('.mlbb_input_phone').val()==''){
+            toastBG('请输入姓名');return false;
+        }
+        updateInfo(photo,$('.mlbb_input_phone').val())
+    });
+});
+function getPhotoUrl(base){
+	$.ajax({
+        type: 'POST',
+        url:url_head+'/app/picUpload',
+        data:{
+            imgData:base
+        },
+        dataType:"json",
+        cache: false,
+        success: function(data){
+                if(data.code==200){
+                    photo=data.data;
+                    console.log(photo);
+                    $('#showImg').attr('src',photo);
+                }else{
+                    toastBG("头像上传失败！");	
+                }
+	    },
+        error: function(e) { 
+            //跳转到错误页面
+            toastBG("发生错误");
+        } 
+    });
+}
+function updateInfo(headimg,username){
+	$.ajax({
+        type: 'POST',
+        url:url_head+'/app/user/updateInfo',
+        data:{
+            image:headimg,
+            username:username
+        },
+        dataType:"json",
+        cache: false,
+        success: function(data){
+                if(data.code==200){
+                    location.href="index.html"
+                }else{
+                    toastBG("用户信息上传失败！");	
+                }
+	    },
+        error: function(e) { 
+            //跳转到错误页面
+            toastBG("用户信息上传失败！");
+
+        } 
+    });
+}
+</script>
+<script src="js/toast.js"></script>
+</html>

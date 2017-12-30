@@ -1,0 +1,588 @@
+<!--
+ * @Author: huangbo 
+ * @Date: 2017-11-21 13:26:00 
+ * @Last Modified by:   heying 
+ * @Last Modified time: 2017-11-21 13:26:00 
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="keywords" content="摩力宝贝计划,摩力云科技"/>
+    <meta name="author" content="heying, 848032671@qq.com"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name = "format-detection" content = "telephone=no">
+    <title>摩力宝贝计划</title>
+  
+    <link rel="stylesheet" href="css/mlbb.css">
+    <link rel="stylesheet" href="css/animate.css">
+    <link rel="stylesheet" href="css/swiper/swiper.min.css">
+    <script src="js/url.js"></script>
+    <script src="js/jquery-3.2.1.js"></script>
+    <script src="js/vue.js"></script>
+    <script src="js/toast.js"></script>
+    <link rel="stylesheet" href="css/toast.css">
+    <script src="js/mlbb.js"></script>  
+    <script src="js/mpicker/mPicker.js"></script>  
+    <link rel="stylesheet" type="text/css" href="http://www.jq22.com/jquery/bootstrap-3.3.4.css">
+    <link rel="stylesheet" href="css/mpicker.css">
+    <link rel="stylesheet" href="css/base.css">
+    <script src="js/lCalendar/lCalendar.js"></script>
+    <link rel="stylesheet" href="css/lCalendar/lCalendar.css">
+    <style>
+    .swiper-container {
+			width: 100%;
+			height: 100%;
+		}
+		.swiper-slide {
+			text-align: center;
+			font-size: 18px;
+			background: #fff;
+	
+			/* Center slide text vertically */
+			display: -webkit-box;
+			display: -ms-flexbox;
+			display: -webkit-flex;
+			display: flex;
+			-webkit-box-pack: center;
+			-ms-flex-pack: center;
+			-webkit-justify-content: center;
+			justify-content: center;
+			-webkit-box-align: center;
+			-ms-flex-align: center;
+			-webkit-align-items: center;
+			align-items: center;
+		}
+		.swiper-slide>img{
+			width: 100%;
+			height: 100%;
+			background-size: cover;
+		}
+		.swiper-pagination-bullet-active{
+			background: rgb(239, 144, 57);
+        }
+        /* 新协议 */
+        .xieyi_cover{
+            position: fixed;
+            top: 0;left: 0;
+            z-index: 999999;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, .4);
+        }
+        .xieyi_main{
+            width: 95%;
+            display: block;
+            margin: 0 auto;
+            height: 97.5%;
+            background: #fff;
+            margin-top: 2.5%;
+        }
+        .xieyi_btns{
+            width: 100%;
+            background: #fff;
+            height: 50px;
+            bottom: 0;
+        }
+        .xieyi_btns>button:active{
+            background-color: rgb(239, 144, 22);
+        }
+        .xieyi_btns>button{
+            width: 90%;
+            margin-left: 5%;
+            height: 40px;
+            margin-top: 5px;
+            border: none;
+            font-size: 15px;
+            border-radius: 4px;
+            text-align: center;
+            color: #fff;
+            background-color: rgb(239, 144, 57);
+        }
+    </style>
+</head>
+<body>
+    <div class="mlbb_plan" id="mlbb_plan">
+        <div class="banner_main">
+            	<div class="swiper-container">
+                        <div class="swiper-wrapper">
+                            <div class="swiper-slide"><img src="images/1.jpg" alt=""></div>
+                            <div class="swiper-slide"><img src="images/2.jpg" alt=""></div>
+                            <div class="swiper-slide"><img src="images/3.jpg" alt=""></div>
+                            <div class="swiper-slide"><img src="images/4.jpg" alt=""></div>
+                            <div class="swiper-slide"><img src="images/5.jpg" alt=""></div>
+                        </div>
+                        <!-- Add Pagination -->
+                        <div class="swiper-pagination"></div>
+                    </div>
+                
+                    <!-- Swiper JS -->
+                    <script src="js/swiper/swiper.min.js"></script>
+                
+                    <!-- Initialize Swiper -->
+                    <script>
+                    var swiper = new Swiper('.swiper-container', {
+                        pagination: '.swiper-pagination',
+                        paginationClickable: true,
+                        autoplay:2500,
+                        autoplayDisableOnInteraction : false
+                    });
+                    </script>
+        </div>
+        <div class="mlbb_input">
+            <li id="site" onclick="document.getElementById('input_site').focus()">所在省市<b>*</b>
+                <span class="input_arrow" ><font>&#xe600;</font><span id="cur_site"></span></span>    
+            </li>
+            <li id="hosi_name">医院名称<b>*</b>
+                <span class="input_arrow"><font>&#xe600;</font><span id="cur_hosi_name"></span></span>    
+            </li>
+        </div>
+        <div class="mlbb_input">
+            <li class="es_inputli">产妇相片(选填)
+                <font id="imginput" onclick="document.getElementById('inputImage').click()">&#xe648;</font>
+                <img src="images/1.jpg" id="showImg" onclick="document.getElementById('inputImage').click()">   
+            </li>
+            <li id="name">产妇姓名<b>*</b>
+                <span class="input_arrow"><font>&#xe600;</font><span id="cur_name"></span></span>    
+            </li>
+            <li id="name2">宝爸姓名<b>*</b>
+                <span class="input_arrow"><font>&#xe600;</font><span id="cur_name2"></span></span>    
+            </li>
+            <li id="phone1">联系电话<b>*</b>
+                <span class="input_arrow"><font>&#xe600;</font><span id="cur_phone1"></span></span>    
+            </li>
+            <li id="phone2">备用电话
+                <span class="input_arrow"><font>&#xe600;</font><span id="cur_phone2"></span></span>    
+            </li>
+            <li id="time">预产日期<b>*</b>
+                <span class="input_arrow"><font>&#xe600;</font><span id="cur_time"></span></span>
+                <input id="demo1" type="text" readonly="" name="input_date" placeholder="日期选择特效" data-lcalendar="2011-01-1,2019-12-31"  style="height:0px;border:none;"/>
+            </li>
+            <li id="hosi_num">住院编号
+                <span class="input_arrow"><font>&#xe600;</font><span id="cur_hosi_num"></span></span>    
+            </li>
+        </div>
+        
+        <div class="checkbox-wrap">
+            <input type="checkbox" value="xieyi" name="choose" id="xieyi">
+            <label for="xieyi">我已阅读并同意<a id="toframe">《摩力宝贝用户使用协议》</a></label>
+        </div>
+     </div>
+    <button class="mlbb_input_paybtn" disabled>我要预定399￥</button>
+<!-- tupian -->
+    <input  id="inputImage"  type="file" accept="image/*" style="display: none;"/>
+    <div id="clipArea" style='display:none'>
+        <div class="cancel_btns" id="cancel_clip">&#xe635;</div>
+        <div class="yes_btns" id="yes_clip">&#xe65e;</div>
+     </div>
+<!-- 弹窗 -->
+    <div class="diy_cover">
+        <div class="pop_main animated fadeInUp">
+            <div class="title">产妇姓名</div>
+            <input type="text" class="input" id="inputtext" placeholder="请输入" onkeyup="this.value=this.value.replace(/[\d]/g,'').replace(' ','');">
+            <input type="number" pattern="\d*" class="input" id="inputnum" placeholder="请输入" onkeyup="this.value=this.value.replace(/\D/g,'').replace(' ','');">
+            <div class="btns">
+                <div class="btn" id="confirm">确定</div>
+                <div class="btn" id="cancel">取消</div>  
+            </div>
+        </div>
+     </div>
+     <!-- 用户协议 -->
+     <div class="xieyi_cover" style="display:none;">
+         <div class="xieyi_main animated zoomIn">
+        <iframe src="xieyi.html" id="frame" width="100%" height="100%">
+        <div class="xieyi_btns"><button>我已经认真阅读</button></div>
+        </div>
+     </div>
+     
+</body>
+<script src="js/photo/hammer.min.js"></script>
+<script src="js/photo/iscroll-zoom-min.js"></script>
+<script src="js/photo/lrz.all.bundle.js"></script>
+<script src="js/photo/PhotoClip.js"></script>
+<script src="js/mpicker/json.js"></script>
+<script src="js/mpicker/jsonExchange.js"></script>
+<script src="js/mpicker/mPickerBeta.js"></script>
+<script>
+//params
+var hosi=[];
+var isvisited=false; 
+var photo='';//产妇照片
+var storeId;//医院id
+
+// params 
+// frame
+
+
+
+
+// frame
+// 弹窗
+function toastBG(text) {
+    $('body').toast({
+        position:'fixed',
+        content:text,
+        duration:1000,
+        animateDuration:500,
+        isCenter:false,
+        background:'rgba(239, 144, 57,0.8)',//244,64,64
+        animateIn:'bounceIn-hastrans',
+        animateOut:'bounceOut-hastrans',
+    });
+ }
+var pc = new PhotoClip('#clipArea',{
+
+    adaptive: ['100%', '100%'],
+    file: '#inputImage',
+    view: '#showImg',
+    ok: '#yes_clip',
+    //img: 'img/mm.jpg',
+    loadStart: function(data) {
+        console.log('开始读取照片'+JSON.stringify(data));
+    },
+    loadComplete: function(data) {
+        console.log('照片读取完成'+JSON.stringify(data));
+        document.getElementById('clipArea').style.display='block';
+    },
+    done: function(dataURL) {
+        document.getElementById('clipArea').style.display='none';
+        console.log(dataURL);
+        $('.es_inputli font').hide();
+        $('#showImg').attr('src',dataURL);
+        $('#showImg').show();
+        getPhotoUrl(dataURL);
+    },
+    fail: function(msg) {
+        toastBG(msg);
+    }
+ });	
+function getPhotoUrl(base){
+    $.ajax({
+    type: 'POST',
+    url:url_head+'/app/picUpload',
+    data:{
+        imgData:base
+    },
+    dataType:"json",
+    cache: false,
+    success: function(data){
+        if(data){
+            photo=data.data;
+            console.log(photo);
+            $('#showImg').attr('src',photo);
+        }else{
+            toastBG("图片上传失败！");	
+        }
+
+    },
+    error: function(e) { 
+    //跳转到错误页面
+    toastBG("发生错误");} 
+    });
+ }
+$(function(){
+    $('#cancel_clip').on('click',function(e){
+        document.getElementById('clipArea').style.display='none';
+    });
+    $('#hosi_name').on('click',function(e){
+        if(hosi.length==0&&!isvisited){
+            toastBG('请先选择地区!')
+            return false;
+        }
+        if(hosi.length==0&&isvisited){
+            toastBG('该地区还没有合作医院!')
+            return false;
+        }
+    });
+   $('.mlbb_input_paybtn').on('click',function(e){
+        if(isNull($('#cur_site'))||isNull($('#cur_hosi_name'))||isNull($('#cur_name'))||isNull($('#cur_name2'))||isNull($('#cur_phone1'))||isNull($('#cur_time'))){
+            toastBG("*为必填项")
+        }else{
+            if(!(/^1[34578]\d{9}$/.test($('#cur_phone1').text()))){
+                toastBG('请检查电话号码是否有误！')
+            }else{
+                if($('#cur_phone2').text()!=''&&!(/^1[34578]\d{9}$/.test($('#cur_phone2').text()))){
+                    toastBG('请检查备用号码是否有误！')
+                }else{
+                    CreateOrder(storeId,$('#cur_name').text(),$('#cur_name2').text(),$('#cur_phone1').text(),photo,$('#cur_phone2').text(),$('#cur_time').text(),$('#cur_hosi_num').text())                
+                }
+            }
+        }
+   })
+    var inputarr=["name","phone1","phone2","hosi_num","name2"];
+    var curinputtype;
+    $('#name').on("click",function(e){
+        curinputtype=inputarr[0];
+        $('#inputnum').hide();
+        $('#inputtext').show();
+        $('.pop_main .title').text('产妇姓名');
+        $('#inputtext').attr("type","text");
+        $('#inputtext').attr("maxlength","8");        
+        $('#inputtext').attr("placeholder","请输入产妇姓名");
+        $('.diy_cover').show();
+        setTimeout(function() {
+            $('#inputtext').focus();
+        }, 1000);
+        
+    })
+    $('#name2').on("click",function(e){
+        curinputtype=inputarr[4];
+        $('#inputnum').hide();
+        $('#inputtext').show();
+        $('.pop_main .title').text('宝爸姓名');
+        $('#inputtext').attr("type","text");
+        $('#inputtext').attr("maxlength","8");        
+        $('#inputtext').attr("placeholder","请输入宝爸姓名");
+        $('.diy_cover').show();
+        setTimeout(function() {
+            $('#inputtext').focus();
+        }, 1000);
+        
+    })
+    $('#phone1').on("click",function(e){
+        curinputtype=inputarr[1];
+        $('#inputnum').show();
+        $('#inputtext').hide();
+        $('.pop_main .title').text('联系电话');
+        $('#inputnum').attr("type","num");
+        $('#inputnum').attr("maxlength","11");
+        $('#inputnum').attr("placeholder","请输入联系电话");
+        $('.diy_cover').show();
+        setTimeout(function() {
+            $('#inputnum').focus();
+        }, 1000);
+    })
+    $('#phone2').on("click",function(e){
+        curinputtype=inputarr[2];
+        $('#inputnum').show();
+        $('#inputtext').hide();
+        $('.pop_main .title').text('备用电话');
+        $('#inputnum').attr("maxlength","11");
+        $('#inputnum').attr("type","num");    
+        $('#inputnum').attr("placeholder","请输入备用电话");
+        $('.diy_cover').show();
+        setTimeout(function() {
+            $('#inputnum').focus();
+        }, 1000);
+    })
+    $('#hosi_num').on("click",function(e){
+        curinputtype=inputarr[3];
+        $('#inputnum').show();
+        $('#inputtext').hide();
+        $('.pop_main .title').text('住院编号');
+        $('#inputnum').attr("maxlength","26");
+        $('#inputnum').attr("type","num");
+        // $(".pop_main .input").keyup(function(){this.value=this.value.replace(/\D/g,'').replace(' ','');});        
+        $('#inputnum').attr("placeholder","请输入住院编号");
+        $('.diy_cover').show();
+        setTimeout(function() {
+            $('#inputnum').focus();
+        }, 1000);
+    })
+    $('#cancel').on('click',function(e){
+        $(".pop_main .input").blur();
+        $('#inputnum').blur();
+            $('#inputtext').blur();
+        $('.diy_cover').hide();
+        $(".pop_main .input").val('');
+    })
+    $('#confirm').on('click',function(e){
+        $(".pop_main .input").blur(); 
+        $('#inputnum').blur();
+            $('#inputtext').blur();       
+        if($(".pop_main .input").eq(0).val()==''&&$(".pop_main .input").eq(1).val()==''){
+            if(curinputtype=='phone2'||curinputtype=='hosi_num'){
+
+            }else{
+                toastBG('您还没有输入!');
+            return false;
+            }
+           
+        }
+       switch (curinputtype) {
+        case 'name':
+            $("#cur_name").text($('#inputtext').val());
+            $('.diy_cover').hide();
+        break;
+        case 'phone1':
+            $("#cur_phone1").text($('#inputnum').val());
+            $('.diy_cover').hide();
+        break;
+        case 'phone2':
+            $("#cur_phone2").text($('#inputnum').val());
+            $('.diy_cover').hide();
+        break;
+        case 'hosi_num':
+            $("#cur_hosi_num").text($('#inputnum').val());
+            $('.diy_cover').hide();
+        break;
+        case 'name2':
+            $("#cur_name2").text($('#inputtext').val());
+            $('.diy_cover').hide();
+        break;
+        default:
+       
+        break;
+       }
+       $(".pop_main .input").val('');
+    });
+    
+   $('.checkbox-wrap').on('click',function(){
+    if($('#xieyi').is(':checked')){
+        $('.mlbb_input_paybtn').attr('disabled',false)      
+    }else{
+        $('.mlbb_input_paybtn').attr('disabled',true)
+    }
+   });
+   $('#xieyi').on('click',function(){
+       
+    if(!$('#xieyi').is(':checked')){
+        $('.mlbb_input_paybtn').attr('disabled',false)        
+    }else{
+        $('.mlbb_input_paybtn').attr('disabled',true)
+    }
+   });
+   $('#toframe').on('click',function(){
+    // alert($('.xieyi_main').height())
+    $('#frame').width=$('.xieyi_main').width();
+    $('#frame').height=$('.xieyi_main').height()-50;
+    $('.xieyi_cover').show();
+    });
+  
+ })
+
+
+$(function(){
+    
+    // 地区选择
+    $('#site').mPicker({
+        level:2,
+        dataJson: city3,
+        Linkage:true,
+        rows:6,
+        idDefault:true,
+        splitStr:'-',
+        header:'<div class="mPicker-header">选择地区</div>',
+        confirm:function(){
+            console.info('【json里有不带value时】');
+            console.info('选中的id序号为：',$('#site').data('id1')+'-'+$('#site').data('id2')+'-'+$('#site').data('id3'));
+            var id1= $('#site').data('id1');
+            var id2 = $('#site').data('id2');
+            var id3 = $('#site').data('id3');
+            var three;
+            try {
+                three=city3[id1].child[id2].child[id3].name
+            }catch(e){
+                three='';
+            }
+            $('#cur_site').text(city3[id1].name+' '+city3[id1].child[id2].name+' '+three);
+            getHospByCity($('#cur_site').text());
+            isvisited=true;
+        },
+        cancel:function(){
+            console.info('返回之前的id序号：',$('#site').data('id1')+'-'+$('#site').data('id2')+'-'+$('#site').data('id3'));
+        }
+    });
+ });
+//医院选择
+function chooseHosp(){
+    // 医院选择
+    $('#hosi_name').mPicker({
+        level:1,
+        dataJson:hosi,
+        Linkage:false,
+        rows:4,
+        idDefault:true,
+        header:'<div class="mPicker-header">选择医院</div>',
+        confirm:function(){
+            $('#cur_hosi_name').text(hosi[$('#hosi_name').data('id1')].name); 
+            storeId=hosi[$('#hosi_name').data('id1')].id;
+        },
+        cancel:function(){}
+    });
+}
+//   日期选择
+var calendar = new lCalendar();
+    calendar.init({
+        'trigger': '#time',
+        'type': 'date'
+ });
+function getHospByCity(city){
+    $.ajax({
+    type: 'GET',
+    url:url_head+'/app/getStoreData',
+    data:{
+        cityid:city
+    },
+    dataType:"json",
+    cache: false,
+    success: function(data){
+        if(data.code==200){
+            if(data.data.length<=0){
+                // hosi=[{"name":"该地区还没有合作医院","id":-1},{"name":"该地区还没有合作医院","id":-1},{"name":"该地区还没有合作医院","id":-1},{"name":"该地区还没有合作医院","id":-1},{"name":"该地区还没有合作医院","id":-1},{"name":"该地区还没有合作医院","id":-1}];                
+                toastBG("该地区还没有合作医院!");
+                return false;
+            }
+            $('#cur_hosi_name').text('');
+            hosi=[];
+            for(var i=0;i<data.data.length;i++){
+                var temp={"name":data.data[i].storeName,"id":data.data[i].storeId};
+                hosi.push(temp);
+            }
+            chooseHosp();//选择医院
+        }else{
+        toastBG('未获取到医院数据！')            
+        }    
+    },
+    error: function(e) {
+        toastBG('未获取到医院数据！')
+    } 
+    });
+ }
+//  创建订单
+function CreateOrder(hospid,username,username2,phone,images,phone2,hxTime,storeCode){
+    $.ajax({
+        type: 'POST',
+        url:url_head+'/app/orderCreate',
+        data:{
+            storeid:hospid,
+            username:username,
+            username2:username2,
+            telphone:phone,
+            images:images,
+            telphone2:phone2,
+            hxTime:hxTime,
+            storeCode:storeCode
+        },
+        dataType:"json",
+        cache: false,
+        success: function(data){
+            if(data.code==200){
+            //  支付订单
+            // toastBG('等待支付')
+            // 下面是支付成功跳转
+            var testid=1;//测试id
+            location.href='update.html?orderid='+testid;//测试
+            }else{
+                toastBG(data.msg)
+                // var testid=1;//测试id
+                // location.href='update.html?orderid='+testid;//测试
+            }    
+        },
+        error: function(e) {
+            toastBG('发生错误，请刷新再试！')        
+        } 
+    });
+ }
+//  判空
+ function isNull(obj){
+     if(obj.text()==''){
+         return true;
+     }else{
+         return false;
+     }
+ }
+</script>
+<script src="js/toast.js"></script>
+</html>

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="keywords" content="摩力宝贝计划,摩力云科技"/>
+    <meta name="author" content="heying, 848032671@qq.com"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name = "format-detection" content = "telephone=no">
+    <script src="js/jquery-3.2.1.js"></script> 
+    <script src="js/toast.js"></script>   
+    <link rel="stylesheet" href="css/toast.css">
+    <link rel="stylesheet" href="css/mlbb.css">
+    <link rel="stylesheet" href="css/base.css">
+    <script src="js/mlbb.js"></script>
+    <script src="js/url.js"></script>
+    <title>验证手机号-摩力宝贝计划</title>
+</head>
+<body class="body">
+    <div class="mlbb_plan" id="mlbb_plan">
+        <div class="mlbb_input">
+            <input type="number" pattern="\d*" class="mlbb_input_phone" placeholder="手机号码" maxlength="11" onkeyup="this.value=this.value.replace(/\D/g,'').replace(' ','');">
+            <div class="mlbb_input_group">
+                <input type="number" pattern="\d*" class="mlbb_input_code" placeholder="验证码" maxlength="6" onkeyup="this.value=this.value.replace(/\D/g,'').replace(' ','');">
+                <button class="mlbb_send_code">获取验证码</button>
+            </div>
+        </div>
+
+    <button class="mlbb_next_btn">下一步</button>
+    </div>
+</body>
+<script>
+    var inter;
+$(function(){
+    $('.mlbb_send_code').on('click',function(e){
+        if($('.mlbb_input_phone').val()==''){
+            toastBG('请先输入手机号!');
+            return false;
+        }else if(!(/^1[34578]\d{9}$/.test($('.mlbb_input_phone').val()))){
+            toastBG('请检查手机号是否有误!');
+            return false;
+        }
+        
+        $('.mlbb_send_code').attr('disabled',true);
+        var i=60;
+        inter=setInterval(function(){
+            i=i-1;
+            if(i>0){
+             $('.mlbb_send_code').text('已发送('+i+'s)') 
+            }else{
+                $('.mlbb_send_code').text('获取验证码');
+                $('.mlbb_send_code').attr('disabled',false); 
+                clearInterval(inter);
+            } 
+        },1000);
+        getCode($('.mlbb_input_phone').val());
+    });
+    $('.mlbb_next_btn').on('click',function(){
+        if($('.mlbb_input_phone').val()==''){
+            toastBG('请输入手机号!');return false;
+        }
+        if($('.mlbb_input_code').val()==''){
+            toastBG('请输入验证码!');return false;
+        }
+        if(!(/^1[34578]\d{9}$/.test($('.mlbb_input_phone').val()))){
+            toastBG('请检查手机号是否有误!');return false;
+        }
+        SendCode($('.mlbb_input_phone').val(),$('.mlbb_input_code').val());//提交手机号和验证码
+    })
+})
+function getCode(phone){  
+    $.ajax({
+        type: 'POST',
+        url:url_head+'/app/user/sendsms',
+        data:{
+            phone:phone
+        },
+        dataType:"json",
+        cache: false,
+        success: function(data){
+            if(data.code==200){
+                toastBG('验证码发送成功!请留意消息!')
+            }else{
+                toastBG('发生错误!')            
+                clearInterval(inter);
+                $('.mlbb_send_code').attr('disabled',false);
+                $('.mlbb_send_code').text('获取验证码');
+            }    
+        },
+        error: function(e) {
+            toastBG('发生错误!')
+            clearInterval(inter);
+            $('.mlbb_send_code').attr('disabled',false);
+            $('.mlbb_send_code').text('获取验证码');
+        } 
+    });
+}
+function SendCode(phone,code){
+    $.ajax({
+        type: 'POST',
+        url:url_head+'/app/user/updatePhone',
+        data:{
+            phone:phone,
+            smscode:code
+        },
+        dataType:"application/json",
+        cache: false,
+        success: function(data){
+            if(data.code==200){
+                // 去填写信息
+                location.href="info.html";
+            }else{
+            toastBG(data.msg)               
+            }    
+        },
+        error: function(e) {
+            toastBG('发生错误!')
+        } 
+    });
+}
+</script>
+<script src="js/toast.js"></script>
+</html>

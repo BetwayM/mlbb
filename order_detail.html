@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="keywords" content="摩力宝贝计划,摩力云科技"/>
+    <meta name="author" content="heying, 848032671@qq.com"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name = "format-detection" content = "telephone=no">
+        <title>订单详情-摩力宝贝计划</title>
+        <link rel="stylesheet" href="css/animate.css">
+        <link rel="stylesheet" href="css/base.css">
+        <link rel="stylesheet" href="css/mlbb.css">
+        <link rel="stylesheet" href="css/common.css">
+        <link rel="stylesheet" href="css/index.css">
+        <link rel="stylesheet" href="css/jquery.step.css">
+        <script src="js/jquery-3.2.1.js"></script>
+        <script src="js/vue.js"></script>
+        <script src="js/toast.js"></script>
+        <link rel="stylesheet" href="css/toast.css">
+        <script src="js/mlbb.js"></script> 
+        <script src="js/url.js"></script> 
+        <script src="js/jquery.step.min.js"></script>
+        <style>
+         .input_arrow>span{
+             padding-right: 10px;
+         }
+         .contact{
+    float: left;
+    width: 100%;
+    height: 45px;
+    text-align:left;
+    font-size: 15px;
+    line-height: 45px;padding-left: 10px;
+     background: #fff;
+     text-align: left;
+     color: #4d4d4d;
+    border-bottom: 0.7px solid rgba(9, 9, 9, 0.1);
+}
+a{
+    width: 100%;
+    text-decoration: none;
+}
+a:visited{
+    text-decoration: none;
+}
+.contact>span{
+    float: right;
+    height: 100%;
+    color: #aaa;
+    padding-right: 3px;
+    font-size: 13px;
+    line-height: 45px;
+}
+.contact>font{
+   float: right;
+   font-family: iconfont !important;
+   height: 100%;
+   color: #999;
+   font-size: 25px;
+   line-height: 45px;
+   padding-right: 10px;
+}
+        </style> 
+</head>
+<body>
+    <div class="main">
+        <div class="step_tip">视频制作进度</div>
+        <div id="step"></div>
+        <div class="mlbb_tips">
+            <div class="mlbb_tip" id="w"></div>
+            <button class="detail_process">查看进度<div class="order_process Rotation"></div></button>
+            
+        </div>
+    </div>
+    <div id="app">
+<div class="mlbb_input">
+    <li>产妇姓名
+    <span class="input_arrow"><span>{{orderDetail.username}}</span></span>    
+    </li>
+    <li>宝爸姓名
+    <span class="input_arrow"><span>{{orderDetail.username2}}</span></span>    
+    </li>
+    <li>联系电话
+    <span class="input_arrow"><span>{{orderDetail.telphone}}</span></span>    
+    </li>
+    <li>医院名称
+    <span class="input_arrow"><span>{{orderDetail.storeCode}}</span></span>    
+    </li>
+    <li>订单编号
+    <span class="input_arrow"><span>{{orderDetail.orderNum}}</span></span>    
+    </li>
+    <li>下单时间
+    <span class="input_arrow"><span>{{orderDetail.createTime}}</span></span>    
+    </li>
+</div>
+<div class="mlbb_input">
+    <a href="tel:0756-3210796"><div class="contact" id="contact1">联系客服<font>&#xe600;</font><span>0756-3210796</span></div></a>
+   
+</div>
+<div class="mlbb_watch_btn" id="update">查看视频</div>
+
+</div>
+</body>
+<script type="text/javascript">
+var orderid=getUrlParam('orderid');
+console.log('订单id：'+orderid);
+getDetailByid(orderid);
+
+$('.detail_process').on('click',function(){
+    location.href='order_process.html?orderid='+orderid;
+})
+ // 客服电话
+ document.getElementById('contact1').onclick=function(){
+    window.location.href="tel:0756-3210796";
+}
+$('#update').on('click',function(){
+    location.href='Video.html?url='+视频的链接;
+})
+
+
+function setText(index){
+    // alert(index)
+    var text='';
+    switch (index) {
+        case 0:
+            text='摩力宝贝计划视频制作费用支付成功，请点击"上传素材"上传相关图片素材。'
+        break;
+        case 1:
+            text='素材上传成功,请点击宝贝出生,填写宝贝信息!'
+        break;
+        case 2:
+            text='宝贝已降生，正在进行人工智能匹配视频...'
+        break;
+        case 3:
+            text='视频已匹配完成，摩力宝贝团队正在加班加点为您制作视频...'
+        break;
+        case 4:
+            text='摩力宝贝计划视频已上传完成，点击下方查看视频按钮在线观看视频。'
+        break;
+        default:
+        break;
+    }
+    var index=0;
+    var word=text;
+    setInterval(function(){
+        document.getElementById("w").innerText = word.substring(0,index++)
+    }, 100);
+}
+    function setStep(index){
+        var $step = $("#step");
+        $step.step({
+            index: index,
+            time: 800,
+            title: ["上传素材", "宝贝出生", "匹配视频", "后期制作", "上传完成"]
+        });
+        Step($step.getIndex())
+        $("#prevBtn").on("click", function() {
+            $step.prevStep();
+            $index.text($step.getIndex());
+        });
+
+        $("#nextBtn").on("click", function() {
+            $step.nextStep();
+            $index.text($step.getIndex());
+        });
+
+        $("#btn1").on("click", function() {
+            $step.toStep(1);
+            $index.text($step.getIndex());
+        });
+
+        $("#btn2").on("click", function() {
+            $step.toStep(2);
+            $index.text($step.getIndex());
+        });
+    };
+    // 通过订单id获取订单详情
+    function getDetailByid(orderid){
+        $.ajax({
+        type: 'POST',
+        url:url_head+'/app/user/orderDetails',
+        data:{
+            orderId:orderid
+        },
+        dataType:"json",
+        cache: false,
+        success: function(data){
+                if(data.code==200){
+                    console.log(data.detail)
+                    data.detail.createTime=new Date(data.detail.createTime).format('yyyy-MM-dd hh:mm')
+                    detail.orderDetail=data.detail;
+                    detail.step=data.detail.status;
+                    
+                    setText(4)
+                    setStep(4)
+                   
+                }else{
+                    toastBG(data.msg);	
+                }
+	    },
+        error: function(e) { 
+            //跳转到错误页面
+            toastBG("获取订单详情失败!");
+
+        } 
+    });
+
+    }
+    var detail=new Vue({
+        el:'#app',
+        data:{
+            orderDetail:[],
+            step:0
+        }
+    });
+    //根据当前进度，设置样式
+    function Step(index){
+        switch (index) {
+            case 0:
+            $('.ui-step-icon').eq(0).attr("src",'images/active.gif')
+            $('.ui-step-icon').eq(1).remove();
+            $('.ui-step-icon').eq(2).remove();
+            $('.ui-step-icon').eq(3).remove();
+            $('.ui-step-icon').eq(4).remove();
+            $('.parent').eq(1).text(2)                
+            $('.parent').eq(2).text(3)
+            $('.parent').eq(3).text(4)
+            $('.parent').eq(4).text(5)
+            $('.ui-step-icon').eq(0).on('click',function(){
+                location.href="update.html?orderid="+orderid;
+            })
+            break;
+            case 1:
+            $('.ui-step-icon').eq(0).attr("src",'images/normal.png')
+            $('.ui-step-icon').eq(1).attr("src",'images/active.gif')
+            $('.ui-step-icon').eq(2).remove();
+            $('.ui-step-icon').eq(3).remove();
+            $('.ui-step-icon').eq(4).remove();
+            $('.parent').eq(2).text(3)
+            $('.parent').eq(3).text(4)
+            $('.parent').eq(4).text(5)
+            $('.ui-step-icon').eq(1).on('click',function(){
+                location.href="born.html?orderid="+orderid;
+            })
+            break;
+            case 2:
+            $('.ui-step-icon').eq(0).attr("src",'images/normal.png')
+            $('.ui-step-icon').eq(1).attr("src",'images/normal.png')
+            $('.ui-step-icon').eq(2).attr("src",'images/active.gif')
+            $('.ui-step-icon').eq(3).remove();
+            $('.ui-step-icon').eq(4).remove()
+            $('.parent').eq(3).text(4)
+            $('.parent').eq(4).text(5)
+            
+            break;
+            case 3:
+            $('.ui-step-icon').eq(0).attr("src",'images/normal.png')
+            $('.ui-step-icon').eq(1).attr("src",'images/normal.png')
+            $('.ui-step-icon').eq(2).attr("src",'images/normal.png')
+            $('.ui-step-icon').eq(3).attr("src",'images/active.gif')
+            $('.ui-step-icon').eq(4).remove()
+            $('.parent').eq(4).text(5)
+         
+            break;
+            case 4:
+            $('.mlbb_watch_btn').show();
+            $('.ui-step-icon').eq(0).attr("src",'images/normal.png')
+            $('.ui-step-icon').eq(1).attr("src",'images/normal.png')
+            $('.ui-step-icon').eq(2).attr("src",'images/normal.png')
+            $('.ui-step-icon').eq(3).attr("src",'images/normal.png')
+            $('.ui-step-icon').eq(4).attr("src",'images/active.gif')
+          
+            break;
+            default:
+            $('.ui-step-icon').eq(0).attr("src",'images/normal.png')
+            $('.ui-step-icon').eq(1).attr("src",'images/normal.png')
+            $('.ui-step-icon').eq(2).attr("src",'images/normal.png')
+            $('.ui-step-icon').eq(3).attr("src",'images/normal.png')
+            $('.ui-step-icon').eq(4).attr("src",'images/normal.png')
+            break;
+        }
+    }
+
+    </script>
+    <script src="js/toast.js"></script>
+</html>

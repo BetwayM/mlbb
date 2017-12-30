@@ -1,0 +1,163 @@
+<!--
+ * @Author: huangbo 
+ * @Date: 2017-12-05 14:56:36 
+ * @Last Modified by:   heying 
+ * @Last Modified time: 2017-12-05 14:56:36 
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="keywords" content="摩力宝贝计划,摩力云科技"/>
+    <meta name="author" content="heying, 848032671@qq.com"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name = "format-detection" content = "telephone=no">
+    <title>宝贝出生信息</title>
+    <link rel="stylesheet" href="css/mlbb.css">
+    <link rel="stylesheet" href="css/animate.css">
+    <script src="js/url.js"></script>
+    <script src="js/jquery-3.2.1.js"></script>
+    <script src="js/vue.js"></script>
+    <script src="js/toast.js"></script>
+    <link rel="stylesheet" href="css/toast.css">
+    <script src="js/mlbb.js"></script>  
+    <link rel="stylesheet" href="css/base.css">
+    <script src="js/lCalendar/lCalendar1.js"></script>
+    <link rel="stylesheet" href="css/lCalendar/lCalendar.css">
+    <style>
+        .input_arrow>span{
+            padding-right: 10px;
+        }
+       .select>span{
+           margin-right: 15px;
+           text-align: center;
+           border-radius: 4px;
+           padding-left: 30px;
+           padding-right: 30px;
+           height: 30px;
+           margin-top: 7.5px;
+           border:0.8px solid rgb(239, 144, 57);
+           line-height: 30px;
+       }
+       .select>.active{
+           background-color: rgb(239, 144, 57);
+           border: none;
+           color: #fff;
+       }
+       .mlbb_input_bornbtn{
+        position: fixed;
+        border: none;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        text-align: center;
+        line-height: 50px;
+        font-size: 15px;
+        color: #fff;
+        height: 50px;
+        background: rgb(239, 144, 57);
+        }
+        .mlbb_input_bornbtn:active{
+            background: rgb(230, 118, 20); 
+        }
+    </style> 
+</head>
+<body>
+    <div class="mlbb_input">
+        <li id="gender">宝贝性别<b>*</b>
+            <span class="input_arrow select"><span class="animated bounceIn">女</span><span class="active animated bounceIn">男</span></span>    
+        </li>
+        <li id="weight">宝贝重量(g)
+            <span class="input_arrow"><font>&#xe600;</font><span id="cur_weight">0.0</span></span>    
+        </li>
+        <!-- <li id="height">宝贝身高(cm)
+            <span class="input_arrow"><font>&#xe600;</font><span id="cur_height">0.0</span></span>    
+        </li> -->
+        <li id="day">出生日期<b>*</b>
+            <span class="input_arrow"><font>&#xe600;</font><span id="cur_day"></span></span>    
+        </li>
+        <li id="born">出生时间<b>*</b>
+            <span class="input_arrow"><font>&#xe600;</font><span id="cur_born"></span></span>    
+        </li>
+    </div>
+    <button class="mlbb_input_bornbtn">提交宝贝出生信息</button>    
+    <div class="diy_cover">
+            <div class="pop_main animated fadeInUp">
+                <div class="title">宝贝重量(g)</div>
+                <input type="number" pattern="\d*" class="input" id="inputnum" placeholder="请输入宝宝重量" maxlength="4" onkeyup="this.value=this.value.replace(/[^\-?\d.]/g,'').replace(' ','');">
+                <div class="btns">
+                    <div class="btn" id="confirm">确定</div>
+                    <div class="btn" id="cancel">取消</div>  
+                </div>
+            </div>
+         </div>
+</body>
+<script>
+    var select_gender=1;//选择性别,默认男
+    //   日期选择
+var calendar = new lCalendar();
+calendar.init({
+    'trigger': '#day',
+    'type': 'date'
+ });
+calendar.init({
+    'trigger': '#born',
+    'type': 'time'
+});
+$('.select').on('click','span',function(){
+    $('.select span').eq(0).removeClass('active bounceIn');
+    $('.select span').eq(1).removeClass('active bounceIn');
+    if($(this).text()=='男'){select_gender=1;}
+    if($(this).text()=='女'){select_gender=0;}
+    // $(this).hide();
+    $(this).show();
+    $(this).addClass('active bounceIn');
+});
+$('#weight').on('click',function(){
+    $('.diy_cover').show();
+    setTimeout(function() {
+        $('#inputtext').focus();
+    }, 1000);
+});
+$('#cancel').on('click',function(e){
+    $(".pop_main .input").blur();
+    $('.diy_cover').hide();
+    $(".pop_main .input").val('');
+})
+$('#confirm').on('click',function(e){
+    if($(".pop_main .input").val()==''){toastBG('您还没有输入!');return false;}
+    $("#cur_weight").text(parseFloat($('#inputnum').val()).toFixed(1)+' kg');
+    $('.diy_cover').hide();
+    $(".pop_main .input").val('');
+});
+$('.mlbb_input_bornbtn').on('click',function(){
+    if($('#cur_day').text()==''||$('#cur_born').tetx()==''){toastBG('*为必填项');return false;}
+    updateData(select_gender,$('#cur_weight').text(),$('#cur_day').text(),$('#cur_born').tetx());
+});
+function updateData(gender,weight,date,time){
+    $.ajax({
+    type: 'POST',
+    url:url_head+'/app/UpdateBaby',
+    data:{
+        sex:gender,
+        weight:weight,
+        date:date,
+        time:time
+    },
+    dataType:"json",
+    cache: false,
+    success: function(data){
+        if(data.code==200){
+           location.history.go(-1);
+        }else{
+            toastBG("信息提交错误!");	
+        }
+    },
+    error: function(e) { 
+    //跳转到错误页面
+    toastBG("信息提交错误!");} 
+    });
+}
+</script>
+</html>

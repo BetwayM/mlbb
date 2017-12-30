@@ -1,0 +1,22 @@
+{
+    "msg": "success",
+    "code": "200",
+    "isPast": 1,
+    "detail": {
+        "images": "{\"0\":\"http://localhost:8080/habx/assets/upload/pic/20171115/201711151706386071.jpg\"}",
+        "orderId": 17,
+        "idCard": "44058319950417193X",
+        "display": 0,
+        "orderNum": "171115455438272",
+        "storeId": 2,
+        "userId": 1,
+        "createTime": 1510736952000,
+        "telphone": "13421467037",
+        "orderPrice": 128,
+        "username2": "陈煜",
+        "orderDesc": "123",
+        "username": "陈煜",
+        "storeCode": "123213213213123",
+        "status": 4
+    }
+}
